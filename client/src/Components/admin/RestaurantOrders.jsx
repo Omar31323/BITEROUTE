@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Order } from "./Order";
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
 
 export const RestaurantOrders = () => {
     const { id } = useParams();

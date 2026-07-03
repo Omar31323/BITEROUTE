@@ -12,5 +12,5 @@ router.get('/login', getLoginPage);
 router.post('/login', LogIn);
 router.get('/logout', LogOut);
 router.get('/persistUser', persistUser);
-router.get('/cart/count',getCartCount);
+router.get('/cart/count', getCartCount);
 export default router;

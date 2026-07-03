@@ -6,10 +6,9 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const logout = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/logout',{credentials:'include'}`);
+            const response = await fetch(`${BASE_URL}/logout`,{credentials:'include'});
             if(response.ok){
                 const data = await response.json();
-                console.log(data);
             }
         } catch (error) {
             alert('could not send request: '+ error.message);
@@ -17,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     }
     useEffect(() => {
-        fetch(`${BASE_URL}/persistUser', { credentials: 'include' }`)
+        fetch(`${BASE_URL}/persistUser`, { credentials: 'include' })
             .then(res => res.ok ? res.json() : null)
             .then(data => setUser(data))
             .finally(() => setLoading(false))

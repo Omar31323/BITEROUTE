@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
 
 export const ItemForm = ({ restaurantId, id, index, onRemove }) => {
     const [categories, setCategories] = useState([]);

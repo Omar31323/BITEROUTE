@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         const fetchCartCount = async () => {
             try {
-                const response = await fetch(`${BASE_URL}/cart/count', { credentials: 'include' }`);
+                const response = await fetch(`${BASE_URL}/cart/count`,{credentials:'include'});
                 if (response.ok) {
                     const data = await response.json();
                     setCartCount(data);

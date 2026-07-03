@@ -1,9 +1,9 @@
 
 import { useState } from "react"
-import { ItemForm } from "./itemForm"
+import { ItemForm } from "../admin/ItemForm"
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
 
 export const AddItems = () => {
     const { id } = useParams();

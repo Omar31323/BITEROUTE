@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { MenuItem } from "./MenuItem";
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { RestaurantHero } from "./RestaurantHero";
-import { useCart } from "../Context/CartContext";
-import { useAuth } from "../Context/AuthContext";
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
-import { Footer } from "./Footer";
+import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
+import { Footer } from "../shared/Footer";
 
 export const Menu = () => {
     const [restaurant, setRestaurant] = useState({});

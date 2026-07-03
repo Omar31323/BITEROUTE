@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../Context/AuthContext';
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
+import { useAuth } from '../../context/AuthContext';
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
 
 export const Login = () => {
     const navigate = useNavigate();

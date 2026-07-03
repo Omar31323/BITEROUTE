@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { z } from "zod";
 import { Link, useNavigate } from 'react-router-dom'
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
 
 const restaurantSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters').max(50, 'Name must be at most 50 characters'),

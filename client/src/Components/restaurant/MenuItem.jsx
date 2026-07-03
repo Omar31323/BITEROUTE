@@ -1,8 +1,8 @@
 
 import { useState } from "react";
-import { useCart } from "../Context/CartContext";
-import { useAuth } from '../Context/AuthContext';
-import { apiFetch } from '../apiFetch';
+import { useCart } from "../../context/CartContext";
+import { useAuth } from '../../context/AuthContext';
+import { apiFetch } from '../../utils/apiFetch';
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const MenuItem = ({ menuItem }) => {

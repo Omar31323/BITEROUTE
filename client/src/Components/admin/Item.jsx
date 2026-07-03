@@ -1,8 +1,8 @@
 
 import { useState } from "react"
-import { ConfirmModal } from './ConfirmModal';
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
+import { ConfirmModal } from '../shared/ConfirmModal';
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
 const BASE_URL = import.meta.env.VITE_API_URL;
 export const Item = ({ item, categories, setMenuItems }) => {
     const [preview, setPreview] = useState(null);

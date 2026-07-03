@@ -1,10 +1,9 @@
-
 import { useEffect, useState } from "react"
-import { Navbar } from "./Navbar";
-import { Restaurant } from "./Restaurant";
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
-import { Footer } from "./Footer";
+import { Navbar } from "../shared/Navbar";
+import { Restaurant } from "../restaurant/Restaurant";
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
+import { Footer } from "../shared/Footer";
 
 const CUISINES = [
     { label: 'All', emoji: '' },
@@ -23,65 +22,119 @@ export const HomePage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedTerm, setDebouncedTerm] = useState(searchTerm);
     const [cuisine, setCuisine] = useState('All');
+
     const [restaurantsList, setRestaurantsList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+
     const toast = useToast();
 
+    // debounce search
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedTerm(searchTerm);
         }, 500);
-        return () => { clearTimeout(timer) }
+
+        return () => clearTimeout(timer);
     }, [searchTerm]);
 
+    // reset page + hasMore when filters change
+    useEffect(() => {
+        setPage(1);
+        setHasMore(true);
+    }, [debouncedTerm, cuisine]);
+
+    // fetch restaurants
     useEffect(() => {
         const searchForRestaurants = async () => {
             try {
-                setIsLoading(true);
+                if (page === 1) {
+                    setIsLoading(true);
+                } else {
+                    setIsLoadingMore(true);
+                }
+
                 const params = new URLSearchParams();
+
                 if (debouncedTerm.trim() !== '')
                     params.append('searchTerm', debouncedTerm);
+
                 if (cuisine.trim() !== 'All')
                     params.append('cuisine', cuisine);
 
+                params.append("page", page);
+
                 const { data, ok } = await apiFetch(`/restaurants?${params.toString()}`);
+
                 setIsLoading(false);
+                setIsLoadingMore(false);
+
                 if (ok) {
-                    setRestaurantsList(data.restaurants);
+                    if (data.restaurants.length === 0) {
+                        setHasMore(false);
+                        return;
+                    }
+
+                    setRestaurantsList(prev =>
+                        page === 1
+                            ? data.restaurants
+                            : [...prev, ...data.restaurants]
+                    );
                 } else {
                     toast.error('Something went wrong. Please try again.');
                 }
             } catch (error) {
                 setIsLoading(false);
+                setIsLoadingMore(false);
                 toast.error('Could not reach the server. Check your connection.');
             }
-        }
+        };
+
         searchForRestaurants();
-    }, [debouncedTerm, cuisine]);
+    }, [debouncedTerm, cuisine, page]);
+
+    // infinite scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            if (isLoading || isLoadingMore || !hasMore) return;
+
+            if (
+                window.innerHeight + window.scrollY >=
+                document.body.offsetHeight - 100
+            ) {
+                setPage(prev => prev + 1);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [isLoading, isLoadingMore, hasMore]);
 
     return (
         <div>
             <Navbar />
 
-            {/* Hero */}
             <div className="hero-section">
                 <h1>Hungry? We've got you <span>covered.</span></h1>
                 <p>Order from the best restaurants near you, delivered fast.</p>
+
                 <div className="search-bar">
                     <input
-                        id="search"
                         type="text"
-                        name="searchkey"
+                        value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && setDebouncedTerm(searchTerm)}
-                        value={searchTerm}
                         placeholder="Search restaurants or cuisines..."
                     />
-                    <button type="button" onClick={() => setDebouncedTerm(searchTerm)}>Search</button>
+                    <button onClick={() => setDebouncedTerm(searchTerm)}>
+                        Search
+                    </button>
                 </div>
             </div>
 
-            {/* Cuisine filters */}
             <div className="filters">
                 {CUISINES.map(({ label, emoji }) => (
                     <button
@@ -94,34 +147,41 @@ export const HomePage = () => {
                 ))}
             </div>
 
-            {/* Section header */}
             <div className="section-header">
                 <h2>Popular Near You</h2>
-                <span id="restaurants-count">
-                    {restaurantsList.length !== 1
-                        ? `${restaurantsList.length} restaurants`
-                        : `${restaurantsList.length} restaurant`}
+                <span>
+                    {restaurantsList.length} restaurants
                 </span>
             </div>
 
-            {/* Restaurant grid */}
             {isLoading && (
-                <p style={{ color: '#aaa', fontSize: '0.875rem', textAlign: 'center', padding: '3rem' }}>Loading...</p>
+                <p style={{ textAlign: 'center', padding: '3rem', color: '#aaa' }}>
+                    Loading...
+                </p>
             )}
+
             {!isLoading && restaurantsList.length === 0 && (
                 <div className="empty-state">
                     <div>🍽️</div>
                     <p>No restaurants found. Try a different search or cuisine.</p>
                 </div>
             )}
+
             {!isLoading && restaurantsList.length > 0 && (
                 <div className="restaurants-grid">
-                    {restaurantsList.map(restaurant => (
-                        <Restaurant key={restaurant._id} restaurant={restaurant} />
+                    {restaurantsList.map(r => (
+                        <Restaurant key={r._id} restaurant={r} />
                     ))}
                 </div>
             )}
-            <Footer/>
+
+            {isLoadingMore && (
+                <p style={{ textAlign: 'center', color: '#aaa' }}>
+                    Loading more...
+                </p>
+            )}
+
+            <Footer />
         </div>
     );
-}
+};

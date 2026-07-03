@@ -1,7 +1,7 @@
 
 import { useState } from "react";
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
 const BASE_URL = import.meta.env.VITE_API_URL;
 export const CartItem = ({ item, onUpdate, onDelete }) => {
   const toast = useToast();
@@ -37,7 +37,7 @@ export const CartItem = ({ item, onUpdate, onDelete }) => {
       toast.error('Could not reach the server.');
     }
   };
-console.log(item.image)
+
   return (
     <div className="item-row" data-itemid={item.menuItemId}>
       <div className="item-emoji">

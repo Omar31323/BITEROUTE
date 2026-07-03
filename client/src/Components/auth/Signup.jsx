@@ -1,8 +1,8 @@
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
 
 export const Signup = () => {
     const navigate = useNavigate();

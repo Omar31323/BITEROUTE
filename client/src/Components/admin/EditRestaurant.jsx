@@ -1,10 +1,10 @@
 
 import { useState, useEffect } from 'react';
-import { ConfirmModal } from './ConfirmModal';
+import { ConfirmModal } from '../shared/ConfirmModal';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
 const BASE_URL = import.meta.env.VITE_API_URL;
 const restaurantSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters').max(50, 'Name must be at most 50 characters'),

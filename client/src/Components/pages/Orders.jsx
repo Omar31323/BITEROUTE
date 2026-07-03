@@ -1,9 +1,9 @@
 
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from 'react-router-dom'
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
-import { Footer } from "./Footer";
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
+import { Footer } from "../shared/Footer";
 
 export const Orders = () => {
     const [ordersList, setOrdersList] = useState([]);

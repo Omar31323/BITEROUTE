@@ -1,12 +1,11 @@
-
 import { useEffect, useState, useRef } from "react"
-import { RestaurantCard } from "./RestaurantCard"
-import { useCart } from "../Context/CartContext";
+import { RestaurantCard } from "../restaurant/RestaurantCard"
+import { useCart } from "../../context/CartContext";
 import { CartItem } from "./CartItem";
 import { Link, useNavigate } from 'react-router-dom'
-import { useToast } from '../Context/ToastContext';
-import { apiFetch } from '../apiFetch';
-import { Footer } from "./Footer";
+import { useToast } from '../../context/ToastContext';
+import { apiFetch } from '../../utils/apiFetch';
+import { Footer } from "../shared/Footer";
 
 export const Cart = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,6 +17,7 @@ export const Cart = () => {
   const [orderPlaced, setOrderPlaced] = useState(false);
   const textareaRef = useRef(null);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const fetchCart = async () => {
     try {
@@ -29,6 +29,7 @@ export const Cart = () => {
         setIsLoading(false);
       } else {
         toast.error('Something went wrong on the server.');
+        setIsLoading(false);
       }
     } catch (error) {
       toast.error('Could not reach the server. Check your connection.');
@@ -74,7 +75,7 @@ export const Cart = () => {
     }
   };
 
-  const deliveryFee = restaurant.deliveryFees === '0' || !restaurant.deliveryFees
+  const deliveryFee = restaurant?.deliveryFees === '0' || !restaurant?.deliveryFees
     ? 0
     : Number(restaurant.deliveryFees);
 
@@ -161,7 +162,7 @@ export const Cart = () => {
           )
         )}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

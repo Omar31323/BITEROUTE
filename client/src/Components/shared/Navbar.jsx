@@ -1,7 +1,7 @@
 
-import { useAuth } from "../Context/AuthContext"
+import { useAuth } from "../../context/AuthContext"
 import { Link } from "react-router-dom";
-import { useCart } from "../Context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 export const Navbar = () => {
     const { user, logout } = useAuth();
